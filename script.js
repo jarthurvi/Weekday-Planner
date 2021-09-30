@@ -3,53 +3,64 @@
 var today = moment();
 $("#currentDay").text(today.format("MMM Do, YYYY"));
 
+function getCurrentTime(){
+
 var currenTime = moment().hours()
 console.log(currenTime)
    //Get Current time
 
-   //get all elements with class "taskarea"
-   var timeBlockElements = $(".form-contol");
+   //get all elements with class "form-control"
+   //var timeBlock= $(".form-control");
 
-$(".form-control").each( function(index, element) {
-  // if you want to grab the id
-  //var id = $(element).attr("id");
+   // referencing each div with the class of time block to test  our current time versus the timeblock to change css coloring to show past, present, future
+$(".time-block").each( function() {
+   // using parseInt() method to turn the value into a number from a string...
+   let timeBlockHour = parseInt($(this).attr('value'))
+    console.log("timeBlockHour Value", timeBlockHour)
 
-  // if you want to remove a class
-  //$(element).removeClass("future");
-
-  // if you want to add a class
- // $(element).addClass("present");
+    if(timeBlockHour < currenTime){
+       $(this).addClass("past")
+    } else if (timeBlockHour === currenTime){
+      $(this).removeClass("past")
+       $(this).addClass("present")
+    } else {
+      $(this).removeClass("past")
+      $(this).removeClass("present")
+       $(this).addClass("future")
+    }
+ 
 })
-
-if (elementID < currentTime) {
-    $(manipID).addClass("past");
-} else if (elementID > currentTime) {
-    $(manipID).addClass("future");
-} else {
-    $(manipID).addClass("present");
 }
 
+getCurrentTime();
+$(".saveBtn").on("click", function(){
+console.log("working")
+
+// getting the user's input from text area...associating them by the class of description
+let userInput = $(this).siblings(".description").val();
+console.log("userinput", userInput)
+
+// the time block that we will be saving to localstorage as our "key" to associate the respectful userinput with.
+let timeBlock = $(this).parent().attr('id')
+console.log("timeblock", timeBlock)
+
+// saving the timeblock as the key and the user input as the value to localstorage
+localStorage.setItem(timeBlock, userInput)
+
+
+}) 
+
+// getting localstorage to remain in the timeblock it was saved to even after a page
+for(var i =9; i < 17 ; i++){
+
+   $(`#hour-${i} .description`).val(localStorage.getItem(`hour-${i}`))
+}
+
+// removing item from local storage by the key it was saved to localstorage as...
+//localStorage.removeItem("hour-9")
 
 
 
 
 
 
-
-
-
-
-   //loop through taskarea classes
-   //for (var i = 0 ; i < timeBlockElements.length ; i++) {
-
-       //Get element i's ID as a string
-      // var elementID = timeBlockElements[i].id;
-
-       //get element by ID
-     //  var manipID = document.getElementById(timeBlockElements[i].id)
-
-       //remove any old classes from element
-      // $(timeBlockElements[i].id).removeClass(".present .past .future");
-
-       // apply new class if task is present/past/future
-   
